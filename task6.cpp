@@ -1,54 +1,127 @@
-#include<iostream>
-
+#include <iostream>
+#include <windows.h>
 using namespace std;
 
+void printMaze();
+void gotoxy(int x, int y);
+void printPacman(int x, int y);
+char getCharAtxy(short int x, short int y);
+void erase(int x, int y);
 
 main()
- {
-	int size;
-	int pipe1;
-	int pipe2;
-	float time;
-	float volume1;
-	float volume2;
-	float total;
-	int v1;
-	int v2;
-	float ans;
-	
+{
+    int pacmanX = 4;
+    int pacmanY = 4;
+    bool gameRunning = true;
 
-	cout << "Enter the size of pool :";
-	cin >>size;
-	cout << "Enter flow rate of 1st pipe :";
-	cin >>pipe1;
-	cout << "Enter flow rate of 2nd pipe :";
-	cin >>pipe2;
-	cout << "Enter the total time :";
-	cin >>time;
+    system("cls");
+    printMaze();
+    printPacman(pacmanX, pacmanY);
 
-	volume1 = pipe1*time;
-	volume2 = pipe2*time;
-	total = volume1 + volume2;
+    while (gameRunning)
+    {
+        if (GetAsyncKeyState(VK_LEFT))
+        {
+            char nextLocation = getCharAtxy(pacmanX - 1, pacmanY);
+            if (nextLocation == ' ')
+            {
 
+                erase(pacmanX, pacmanY);
+                pacmanX = pacmanX - 1;
+                printPacman(pacmanX, pacmanY);
+            }
+        }
+        if (GetAsyncKeyState(VK_RIGHT))
+        {
+            char nextLocation = getCharAtxy(pacmanX + 1, pacmanY);
+            if (nextLocation == ' ')
+            {
+                erase(pacmanX, pacmanY);
+                pacmanX = pacmanX + 1;
+                printPacman(pacmanX, pacmanY);
+            }
+        }
+        if (GetAsyncKeyState(VK_UP))
+        {
+            char nextLocation = getCharAtxy(pacmanX, pacmanY - 1);
+            if (nextLocation == ' ')
+            {
+                erase(pacmanX, pacmanY);
+                pacmanY = pacmanY - 1;
+                printPacman(pacmanX, pacmanY);
+            }
+        }
+        if (GetAsyncKeyState(VK_DOWN))
+            
+        {
+            char nextLocation = getCharAtxy(pacmanX, pacmanY + 1);
+            if (nextLocation == ' ')
+            {
+                erase(pacmanX, pacmanY);
+                pacmanY = pacmanY + 1;
+                printPacman(pacmanX, pacmanY);
+            }
+        }
+        if (GetAsyncKeyState(VK_ESCAPE))
+        {
+            gameRunning = false;
+        }
+        Sleep(200);
+    }
+}
 
-		if(total < size)
-		  {
-			cout << "The pool is not filled yet!!!" << endl;
-			v1 = (volume1/total)*100;
-			cout << "The contribution of 1st pipe is "<< v1 << endl;
-			v2 = (volume2/total)*100;
-			cout << "The contribution of 2nd pipe is "<< v2 << endl;
-			cout << "The total water filled in the pool is "<<total<< " liters"; 
-		   }
-	
-		if(total >= size)
-		 { 
-			cout << "The pool water has overflown!!! "<<endl;
-			ans = total - size;
-			cout << "For "<<time<<" hours the pool overflows with "<<	ans <<" liters";					
+void gotoxy(int x, int y)
+{
+    COORD coordinates;
+    coordinates.X = x;
+    coordinates.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
+}
 
+void printMaze()
+{
+    cout << "########################" << endl;
+    cout << "#                      #" << endl;
+    cout << "#                      #" << endl;
+    cout << "#                      #" << endl;
+    cout << "#                      #" << endl;
+    cout << "#                      #" << endl;
+    cout << "#                      #" << endl;
+    cout << "#                      #" << endl;
+    cout << "#                      #" << endl;
+    cout << "#                      #" << endl;
+    cout << "#                      #" << endl;
+    cout << "#                      #" << endl;
+    cout << "########################" << endl;
+}
+void playerMove(int x, int y)
+{
+    gotoxy(x - 1, y);
+    cout << " ";
+    gotoxy(x, y);
+    cout << "P";
+    Sleep(200);
+}
 
+char getCharAtxy(short int x, short int y)
+{
+    CHAR_INFO ci;
+    COORD xy = {0, 0};
+    SMALL_RECT rect = {x, y, x, y};
+    COORD coordBufSize;
+    coordBufSize.X = 1;
+    coordBufSize.Y = 1;
+    return ReadConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE), &ci, coordBufSize, xy, &rect) ? ci.Char.AsciiChar : ' ';
+}
 
-		}
+void erase(int x, int y)
+{
+    gotoxy(x, y);
+    cout << " ";
+}
 
- }
+void printPacman(int x, int y)
+{
+    gotoxy(x, y);
+    cout << "P";
+}

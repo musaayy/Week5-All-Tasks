@@ -1,49 +1,33 @@
 #include <iostream>
+#include <cmath>
 
 using namespace std;
- 
-string evenishOddish(int number);
 
 main()
- {
-	int number;
-	evenishOddish(number);
-
-  }
-string evenishOddish(int number)
- {
-	int digit;
-	int result;
-	string x;
-	
-	digit=number%10;
-	number=number/10;
-	result=result+digit;
-	
-	digit=number%10;
-	number=number/10;
-	result=result+digit;
-
-	digit=number%10;
-	number=number/10;
-	result=result+digit;
-	
-	digit=number%10;
-	number=number/10;
-	result=result+digit;
-	
-	result = result +number;
-	if (result%2 ==0)
-	 {
-	  x="evenish";
-	  return x;
-	 }
-	if (result%2==1)
- 	 {
-	  x="oddish";
-	  return x;
- 	 }
+{
+    int requiredHours;
+    int days;
+    int worker;
+    float totalHours;
+    cout << "Enter the hours required for the project : ";
+    cin >> requiredHours;
+    cout << "Enter the days that the firm has : ";
+    cin >> days;
+    cout << "Enter the number of worker : ";
+    cin >> worker;
+    totalHours = (days * 10 * worker);
+    totalHours = totalHours - 0.1*totalHours;
+    totalHours = ceil(totalHours);
+    if(totalHours > requiredHours)
+    {
+        int timeLeft;
+        timeLeft = totalHours - requiredHours;
+        cout << "Yes! " << timeLeft << " hours left"; 
+    }
+    if(totalHours < requiredHours)
+    {
+        int timeNeeded;
+        timeNeeded = requiredHours - totalHours;
+        cout << "Not enought time! " << timeNeeded << " hours required";
+    }
 }
-	
-
-	
